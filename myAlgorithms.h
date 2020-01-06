@@ -2,8 +2,12 @@
 #include <ctime>
 #include <cstdlib>
 
-#define FillRand(A, size, rand_range) for (int i = 0; i < size, i++) A[i] = rand() % rand_range;
-#define PtintArr(A, size) for (int i = 0; i < size; i++) cout << A[i] << " ";
+using namespace std;
+
+#define FillRand(A, size, rand_range) for (int i = 0; i < size; i++) { A[i] = rand() % rand_range; }
+#define PrintArr(A, size) for (int i = 0; i < size; i++) { cout << A[i] << " "; }
+
+
 
 int CheckSum (int *arr, int size)
 {
@@ -15,6 +19,6 @@ int CheckSum (int *arr, int size)
 int RunNumber (int *arr, int size)
 {
 	int srs = 1;
-	for (int i = 1; i < N; i++) if (arr[i] < arr[i-1]) srs++;  
+	for (int i = 1; i < size; i++) if (arr[i] < arr[i-1]) srs++;  
 	return srs;
 }
