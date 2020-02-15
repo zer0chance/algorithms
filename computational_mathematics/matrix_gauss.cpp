@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream> 
 #include <iomanip>
+#include <math.h>
 
 #define N 3
 
@@ -76,10 +77,11 @@ void gauss_metod_upgrade()
         int row = k;
         for (int z = k + 1; z < N; z++)
         {
-            if (M[z][k] > M[row][k]) row = z;            
+            if (abs(M[z][k]) > abs(M[row][k])) row = z;            
         }
         if (row != k)
         {
+            cout << endl << "Swap line " << k << " and " << row << endl;
             for (int j = k; j <= N; j++)
             {
                 double temp = M[k][j];
@@ -87,6 +89,8 @@ void gauss_metod_upgrade()
                 M[row][j] = temp;
             }
         }
+
+        print_matrix();
 
         for (int i = k + 1; i < N; i++)
         {
