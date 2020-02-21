@@ -6,6 +6,8 @@ Here I store all my algorithms, if I don't forget to place it here.
 ### Computational Mathematics:
 
 - Gauss method of solving matrices C++
+- Simple iteration method of solving matrices C++
+- Zeydel method of solving matrices C++
 
 
 ### Sorting algorithms:

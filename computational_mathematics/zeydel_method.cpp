@@ -78,26 +78,14 @@ void iterating (double ( &C)[3][3], double B[], int n)
     double R[N], X[N];
     for (int i = 0; i < N; i++)
     {
-        X[i] = B[i];
+        X[i] = 0;
     }
     //Multiplying matrix and vector
     for (int k = 0; k <= n; k++)
     {
         for (int i = 0; i < N; i++)
         {
-            R[i] = 0;
-        }
-        for (int i = 0; i < N; i++)
-        {
-            for (int j = 0; j < N; j++)
-            {
-                R[i] += C[i][j] * X[j];
-            }
-        }
-
-        for (int i = 0; i < N; i++)
-        {
-            X[i] = B[i] - R[i];
+            X[i] = B[i] - (C[i][0] * X[0] + C[i][1]* X[1] + C[i][2]* X[2]);
         }
     }
     print_vector(X);
