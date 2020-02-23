@@ -3,12 +3,14 @@
 #include <iomanip>
 #include <cmath>
 
-#define e 0.0001
+#define e 0.001
 #define N 3
 
 //double M[N][N+1] = {{-3, 1, 2, 1}, {2, 1, -3, -4}, {-4, 2, 1, -2}}; 
 //double M[N][N+1] = {{1, -2, 3, 2}, {3, 1, -1, 3}, {2, 5, 2, 9}}; 
-double M[N][N+1] = {{5, -1, 2, 3}, {-1, 4, 1, 6}, {2, -1, -10, -21}}; 
+//double M[N][N+1] = {{5, -1, 2, 3}, {-1, 4, 1, 6}, {2, -1, -10, -21}}; 
+double M[N][N+1] = {{5, -1, 2, 3}, {1, -5, -1, -7}, {2, 1, 10, 21}}; 
+
 
 
 using namespace std;
@@ -87,8 +89,10 @@ void iterating (double ( &C)[3][3], double B[], int n)
         {
             X[i] = B[i] - (C[i][0] * X[0] + C[i][1]* X[1] + C[i][2]* X[2]);
         }
+        print_vector(X);
+        cout << endl;
     }
-    print_vector(X);
+    
 } 
 
 
