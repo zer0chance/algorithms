@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iostream> 
 #include <iomanip>
-#include <math.h>
+#include <cmath>
 
 #define N 3
 
