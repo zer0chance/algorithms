@@ -3,49 +3,55 @@
 #include <iomanip>
 #include <cmath>
 
-#define N 3
+#define N 100
+#define e 0.00000001 
 
 using namespace std;
 
-double f(double x)
+long double f(long double x)
 {
     return (x * x - 3);
 }
 
 
-double count_c(double a, double b)
+long double count_c(long double a, long double b)
 {
     return ((a + b) / 2);
 }
 
 
-double half_division_method(double a, double b)
+long double half_division_method(long double a, long double b)
 {
-    for (int i = 0; i < N; i++)
+    //long double c = count_c(a, b);
+    int step = 0;
+    while (abs(b-a) / 2  > e)
+    //for (int i = 0; i < N + 1; i++)
     {
-        double c = count_c(a, b);
+        long double c = count_c(a, b);
         if (f(a) * f(c) < 0)
         {
             b = c;
+            step++;
             continue;
         }
         if (f(c) * f(b) < 0)
         {
             a = c;
+            step++;
         } 
     }
-
+    cout << endl << step << endl;
     return count_c(a, b);
 }
 
 
 int main()
 {
-    double a = 1;
-    double b = 2;
+    long double a = 1;
+    long double b = 2;
 
-    double result = half_division_method(a, b);
-    cout << endl << "Result: " << result << endl << endl;
-
+    long double result = half_division_method(a, b);
+    //cout << endl << "Result: " << result << endl << endl;
+    printf("\n Result: %.10Lf \n", result);
     return 0;
 }

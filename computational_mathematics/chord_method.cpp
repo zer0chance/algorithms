@@ -4,8 +4,10 @@
 #include <cmath>
 
 #define N 3
+#define e 0.00000001 
 
 using namespace std;
+
 
 double f(double x)
 {
@@ -21,20 +23,28 @@ double count_c(double a, double b)
 
 double chord_method(double a, double b)
 {
-    for (int i = 0; i < N; i++)
+    double c1 = count_c(a, b);
+    double c2 = 0;
+    int steps = 0;
+    do
+    //for (int i = 0; i < N; i++)
     {
-        double c = count_c(a, b);
-        if (f(a) * f(c) < 0)
+        c1 = count_c(a, b);
+        if (f(a) * f(c1) < 0)
         {
-            b = c;
+            b = c1;
+            steps++;
             continue;
         }
-        if (f(c) * f(b) < 0)
+        if (f(c1) * f(b) < 0)
         {
-            a = c;
+            a = c1;
+            steps++;
         } 
-    }
+        c2 = count_c(a, b);
+    } while (c2 - c1 > e);
 
+    cout << endl << steps << endl;
     return count_c(a, b);
 }
 
@@ -45,7 +55,7 @@ int main()
     double b = 2;
 
     double result = chord_method(a, b);
-    cout << endl << "Result: " << result << endl << endl;
-
+    //cout << endl << "Result: " << result << endl << endl;
+    printf("\n Result: %.10lf \n", result);
     return 0;
 }

@@ -4,6 +4,8 @@
 #include <cmath>
 
 #define N 3
+#define e 0.00000001 
+
 
 using namespace std;
 
@@ -22,12 +24,18 @@ double derivative(double x)
 double newton_method(double a, double b, double x0)
 {
     double x;
-    for (int i = 0; i < N; i++)
+    int steps = 0;
+
+    double prevs;
+    do
+    //for (int i = 0; i < N; i++)
     {
+        prevs = x0;
         x = x0 - f(x0) / derivative(x0);
         x0 = x;
-    }
-
+        steps ++;
+    } while (prevs - x0 > e);
+    cout << endl << steps << endl;
     return (x0 - f(x0) / derivative(x0));
 }
 
