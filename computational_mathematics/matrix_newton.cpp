@@ -5,6 +5,7 @@
 
 #define N 3
 #define NEW_LINE cout << endl << endl;
+#define e 0.00000001
 
 
 using namespace std;
@@ -25,7 +26,7 @@ void print_matrix(double** M)
 }
 
 
-double** inverse_matrix(double W[3][3])
+double** inverse_matrix(double** W)
 {
     double** M;
     M = new double*[N];
@@ -41,16 +42,6 @@ double** inverse_matrix(double W[3][3])
             if (i == j - N) M[i][j] = 1;
             else M[i][j] = 0;
 
-    // // //Output of matrix with inversed:
-    // for (int i = 0; i < N; i++)
-    // {
-    //     cout << endl;
-    //     for (int j = 0; j < N + N; j++)
-    //         cout << M[i][j] << " "; 
-    // }
-    
-    //NEW_LINE
-
     //Forward part
     for (int k = 0; k < N - 1; k++)
     {
@@ -64,7 +55,6 @@ double** inverse_matrix(double W[3][3])
         }
     }    
 
-
     //Making 1 in main diagonal
     for (int k = 0; k < N; k++)
     {
@@ -75,7 +65,6 @@ double** inverse_matrix(double W[3][3])
         }
     }    
 
-    
     //Backward part
     for (int k = N - 1; k >= 0; k--)
     {
@@ -89,32 +78,13 @@ double** inverse_matrix(double W[3][3])
         }
     }
 
-    // //Output of matrix with inversed:
-    // for (int i = 0; i < N; i++)
-    // {
-    //     cout << endl;
-    //     for (int j = 0; j < N + N; j++)
-    //         cout << M[i][j] << " "; 
-    // }
-
-    // NEW_LINE
-
     double** RES = new double*[N];
     for (int i = 0; i < N; i++)
         RES[i] = new double[N];
 
     for (int i = 0; i < N; i++)
         for (int j = 0; j < N; j++)
-            RES[i][j] = M[i][j + N];
-
-    // for (int i = 0; i < N; i++)
-    // {
-    //     cout << endl;
-    //     for (int j = 0; j < N; j++)
-    //         cout << RES[i][j] << " "; 
-    // }   
-
-    // NEW_LINE     
+            RES[i][j] = M[i][j + N];   
 
     return RES; 
 }
@@ -132,6 +102,26 @@ double* F(double* X)
 }
 
 
+double** W1(double* X)
+{
+    double** W = new double*[3];
+    for (int i = 0; i < 3; i++) W[i] = new double[3];
+
+    W[0][0] = 2 * X[0];
+    W[0][1] = 2 * X[1];
+    W[0][2] = 2 * X[2];
+
+    W[1][0] = 4 * X[0];
+    W[1][1] = 2 * X[1];
+    W[1][2] = -4;
+
+    W[2][0] = 6 * X[0];
+    W[2][1] = -4;
+    W[2][2] = 2 * X[2];
+
+    return W;
+}
+
 double* matrix_vector(double** W, double* X) //multiply matrix on vector
 {
     double* RES = new double[N];
@@ -140,29 +130,47 @@ double* matrix_vector(double** W, double* X) //multiply matrix on vector
         for (int j = 0; j < N; j++)
             RES[i] += W[i][j] * X[j];
 
-    // for (int i = 0; i < N; i++)
-    //     printf("%.3lf ", RES[i]);
-    //     //cout << RES[i] << " ";
-
-    //NEW_LINE         
-
     return RES;        
 }
 
 
-double* matrix_newton(double W[N][N])
+double* matrix_newton()
 {
     double* X0 = new double[N];
-    for (int i = 0; i < N; i++) X0[i] = 0.5;
+    double* Xt = new double[N];
 
-    for (int i = 0; i < 3; i++)
+    double** W;
+    double** W_inv;
+    int step = 0;
+
+    for (int i = 0; i < N; i++)
     {
-        double **W_inv = inverse_matrix(W);
+        X0[i] = 0.5;
+        Xt[i] = 0;
+    }
+
+
+    while (abs(X0[0] - Xt[0]) > e || abs(X0[1] - Xt[1]) > e || abs(X0[2] - Xt[2]) > e)
+    {
+        step++;
+        W = W1(X0);
+        W_inv = inverse_matrix(W);
+        for (int i = 0; i < N; i++)
+        {
+            Xt[i] = X0[i];
+        }
         double* FX = F(X0);
         double* Mult = matrix_vector(W_inv, FX);
         for (int j = 0; j < N; j++)
         {
             X0[j] -= Mult[j]; 
+        } 
+
+        cout << endl << "Step " << step << ": ";
+        for (int j = 0; j < N; j++)
+        {
+            cout << setprecision(10) << X0[j] << " ";
+
         } 
     }
     
@@ -171,17 +179,10 @@ double* matrix_newton(double W[N][N])
  
 
 int main(int argc, char** argv)
-{
-    double W[N][N] = {{1, 1, 1}, {2, 1, -4}, {3, -4, 1}};
-
-    double* RES = matrix_newton(W);
-    
-
-    for (int i = 0; i < N; i++)
-        cout << RES[i] << " ";
+{     
+    double* RES = matrix_newton(/*W*/);
 
     NEW_LINE  
-
      
     return 0;
 }
