@@ -10,7 +10,7 @@ double X[N] = {1, 2, 3, 4};
 double Y[N] = {1.0000, 1.4142, 1.7321, 2.0000};
 
 
-double P3(double x)
+double P(double x)
 {
     double result = 0;
 
@@ -31,7 +31,7 @@ double P3(double x)
 
 int main()
 {
-    printf(" \n\n Result: %lf\n\n", P3(static_cast<double>(2.56)));
+    printf(" \n\n Result: %lf\n\n", P(static_cast<double>(1)));
 
     return 0;
 }

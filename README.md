@@ -12,6 +12,7 @@ Here I store all my algorithms, if I don't forget to place it here.
 - Chord method to solve functions C++
 - Newton method to solve functions C++
 - Newton method to solve matrices C++
+- Lagrange polinome to solve functions C++ with graphics of tan and sqrt
 
 ### Sorting algorithms:
 
