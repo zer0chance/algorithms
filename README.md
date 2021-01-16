@@ -21,6 +21,11 @@ Here I store all my algorithms, if I don't forget to place it here.
 - Bubble sort x86 assembly
 - Shaker sort C++
  
+### Template metaprogramming:
+
+- Factorial C++
+- Lists C++
+
 ## Other:
 
 - Reverse polish notation C
