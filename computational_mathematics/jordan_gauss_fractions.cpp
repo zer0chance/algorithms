@@ -85,7 +85,14 @@ const Fraction operator*(const Fraction& lhs, const Fraction& rhs) {
 const Fraction operator/(const Fraction& lhs, const Fraction& rhs) {
     return Fraction(lhs.num * rhs.den, lhs.den * rhs.num);
 }
+const bool operator==(const Fraction& lhs, const Fraction& rhs) {
+    return lhs.num == rhs.num && lhs.den == rhs.den;
+}
+const bool operator!=(const Fraction& lhs, const Fraction& rhs) {
+    return lhs.num != rhs.num;
+}
 
+#ifdef DEBUG
 // Gauss test
 // Fraction Matrix[3][4] = {
 //     {-3, 1, 2, 1},  // 1
@@ -101,12 +108,12 @@ const Fraction operator/(const Fraction& lhs, const Fraction& rhs) {
 // };
 
 // #3 HW
-// Fraction Matrix[4][5] = {
-//     {1, 4, 0, -1, 5},
-//     {2, -3, 1, 1, 3},
-//     {1, 0, 2, -1, 3},
-//     {0, 2, -3, 2, 3}
-// };
+Fraction Matrix[4][5] = {
+    {1, 4, 0, -1, 5},
+    {2, -3, 1, 1, 3},
+    {1, 0, 2, -1, 3},
+    {0, 2, -3, 2, 3}
+};
 
 // #6 team
 // Fraction Matrix[5][6] = {
@@ -117,20 +124,32 @@ const Fraction operator/(const Fraction& lhs, const Fraction& rhs) {
 //     {-1, 6, -7, 7, 7, 14}
 // };
 
-// constexpr unsigned int M = sizeof(*Matrix) / sizeof(Fraction);
-// constexpr unsigned int N = sizeof(Matrix) / sizeof(Fraction) / M;
-
+constexpr unsigned int M = sizeof(*Matrix) / sizeof(Fraction);
+constexpr unsigned int N = sizeof(Matrix) / sizeof(Fraction) / M;
+#else
 Fraction** Matrix;
 unsigned int N;
 unsigned int M;
+#endif
+
+#define IGNORE_ZERO_LINE(i)       \
+    bool zero_line = true;        \
+    for(int x = 0; x < M; x++) {  \
+        if (Matrix[i][x] != 0) {  \
+            zero_line = false;    \
+            break;                \
+        }                         \
+    }                             \
+    if (zero_line) continue;      
 
 void print_matrix() {
     for (int i = 0; i < N; i++) {
+        IGNORE_ZERO_LINE(i)
         std::cout << '\n';
         for (int j = 0; j < M - 1; j++) {
             std::cout << std::setw(12) <<  Matrix[i][j];
         }
-        std::cout << "  |" << std::setw(12) << Matrix[i][N];
+        std::cout << "  |" << std::setw(12) << Matrix[i][M - 1];
     }
     std::cout << '\n';
 }
@@ -139,7 +158,7 @@ void gauss() {
     // Forward part
     for (int k = 0; k < N - 1; k++) {
         for (int i = k + 1; i < N; i++) {
-            if (Matrix[k][k].num != 0) {
+            if (Matrix[k][k] != 0) {
                 Fraction ratio = Matrix[i][k] / Matrix[k][k];
                 for (int j = k; j < M; j++) {
                     Matrix[i][j] += Matrix[k][j] * ratio * -1;
@@ -152,7 +171,7 @@ void gauss() {
     // Set 1 on diagonal
     for (int k = 0; k < N; k++) {
         Fraction elem = Matrix[k][k]; // If elem == 0 -> possible 0 line
-        if (elem.num != 0) {
+        if (elem != 0) {
             for (int i = k; i < M; i++) {
                 Matrix[k][i] /= elem;
             }
@@ -163,7 +182,7 @@ void gauss() {
     // Backward part
     for (int k = N - 1; k >= 0; k--) {
         for (int i = k - 1; i >= 0; i--) {
-            if (Matrix[k][k].num != 0) { // Not a 0-line
+            if (Matrix[k][k] != 0) { // Not a 0-line
                 Fraction ratio = Matrix[i][k] / Matrix[k][k];
                 for (int j = M - 1; j >= k; j--) {
                     Matrix[i][j] += Matrix[k][j] * ratio * -1;
@@ -175,6 +194,7 @@ void gauss() {
 }
 
 int main() {
+#ifndef DEBUG
     std::cout << "Rows: ";
     std::cin >> N;
     std::cout << "Columns: ";
@@ -190,12 +210,30 @@ int main() {
         for (int j = 0; j < M; j++)
             std::cin >> Matrix[i][j];
     }
+#endif
 
     print_matrix();
     gauss();
+    std::cout << "\n\nAnswer:\n";
+    
+    for (int i = 0; i < N; i++) {
+        IGNORE_ZERO_LINE(i)
+        std::cout << 'x' << i + 1 << " = " << Matrix[i][M-1];
+        for (int j = 0; j < M - 1; j++) {
+            if (j != i && Matrix[i][j] != 0) {
+                if (Matrix[i][j].num > 0)
+                    std::cout << " - " << -1 * Matrix[i][j] << 'x' << j + 1;
+                else
+                    std::cout << " + " << -1 * Matrix[i][j] << 'x' << j + 1;
+            }
+        }
+        std::cout << '\n';
+    }
 
+#ifndef DEBUG
     for (int i = 0; i < N; i++) {
         delete[] Matrix[i]; 
     }
     delete[] Matrix;
+#endif
 }
