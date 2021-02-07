@@ -3,8 +3,8 @@
 #include <sstream>
 
 struct Fraction {
-    int num;  // Top
-    int den;  // Bottom
+    int num;
+    int den;
 
     Fraction() : num(0), den(1) {}
     Fraction(int n) : num(n), den(1) {}
@@ -33,7 +33,7 @@ struct Fraction {
         if (den != 1)
             ss << num << '/' << den;
         else
-            ss << num;    
+            ss << num;
         return ss.str();
     }
 
@@ -63,10 +63,13 @@ struct Fraction {
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Fraction& f) {
-        return os << std::setw(12) << f.to_string();
+        return os << f.to_string();
     }
     friend std::ostream& operator<<(std::ostream& os, const Fraction&& f) {
-        return os << std::setw(12) << f.to_string();
+        return os << f.to_string();
+    }
+    friend std::istream& operator>>(std::istream& is, Fraction& f) {
+        return is >> f.num;
     }
 };
 
@@ -91,11 +94,11 @@ const Fraction operator/(const Fraction& lhs, const Fraction& rhs) {
 // };
 
 // #2 HW
-Fraction Matrix [3][5] = {
-    {4, -3, -2, 1, -2},
-    {3, -1, -2, 0, 1},
-    {2, 1, -2, -1, 4}
-};
+// Fraction Matrix [3][5] = {
+//     {4, -3, -2, 1, -2},
+//     {3, -1, -2, 0, 1},
+//     {2, 1, -2, -1, 4}
+// };
 
 // #3 HW
 // Fraction Matrix[4][5] = {
@@ -114,16 +117,20 @@ Fraction Matrix [3][5] = {
 //     {-1, 6, -7, 7, 7, 14}
 // };
 
-constexpr unsigned int M = sizeof(*Matrix) / sizeof(Fraction);
-constexpr unsigned int N = sizeof(Matrix) / sizeof(Fraction) / M;
+// constexpr unsigned int M = sizeof(*Matrix) / sizeof(Fraction);
+// constexpr unsigned int N = sizeof(Matrix) / sizeof(Fraction) / M;
+
+Fraction** Matrix;
+unsigned int N;
+unsigned int M;
 
 void print_matrix() {
     for (int i = 0; i < N; i++) {
         std::cout << '\n';
         for (int j = 0; j < M - 1; j++) {
-            std::cout << Matrix[i][j];
+            std::cout << std::setw(12) <<  Matrix[i][j];
         }
-        std::cout << "  |" << Matrix[i][N];
+        std::cout << "  |" << std::setw(12) << Matrix[i][N];
     }
     std::cout << '\n';
 }
@@ -139,7 +146,7 @@ void gauss() {
                 }
                 print_matrix();
             }
-        } 
+        }
     }
 
     // Set 1 on diagonal
@@ -163,11 +170,32 @@ void gauss() {
                 }
                 print_matrix();
             }
-        }  
+        }
     }
 }
 
 int main() {
+    std::cout << "Rows: ";
+    std::cin >> N;
+    std::cout << "Columns: ";
+    std::cin >> M;
+
+    Matrix = new Fraction*[N];
+    for (int i = 0; i < N; i++) {
+        Matrix[i] = new Fraction[M];
+    }
+
+    for (int i = 0; i < N; i++) {
+        std::cout << "Row " << i + 1 << ": ";
+        for (int j = 0; j < M; j++)
+            std::cin >> Matrix[i][j];
+    }
+
     print_matrix();
     gauss();
+
+    for (int i = 0; i < N; i++) {
+        delete[] Matrix[i]; 
+    }
+    delete[] Matrix;
 }
