@@ -3,8 +3,8 @@
 #include <sstream>
 
 struct Fraction {
-    int num;
-    int den;
+    long long num;
+    long long den;
 
     Fraction() : num(0), den(1) {}
     Fraction(int n) : num(n), den(1) {}
@@ -115,6 +115,15 @@ Fraction Matrix[4][5] = {
     {0, 2, -3, 2, 3}
 };
 
+// #1 team
+// Fraction Matrix[5][6] = {
+//     {3, 1, 5, -2, 3, 35},  
+//     {4, 3, -7, 5, 6, 54},
+//     {-7, 5, 4, 1, -1, -96},
+//     {1, 4, 1, -3, -10, -71},
+//     {6, -9, -8, -8, -2, 59}
+// };
+
 // #6 team
 // Fraction Matrix[5][6] = {
 //     {6, 9, -2, -8, -8, -144},
@@ -122,6 +131,26 @@ Fraction Matrix[4][5] = {
 //     {8, 10, 2, 4, -1, -59},
 //     {8, -4, 6, -5, -3, -10},
 //     {-1, 6, -7, 7, 7, 14}
+// };
+
+// #8 team
+// Fraction Matrix[5][6] = {
+//     {-1, 13, -16, -6, 8, 152},  
+//     {5, 16, 12, 11, -7, 62},
+//     {17, 12, 1, 18, 9, 298},
+//     {15, -15, 3, 1, -7, -127},
+//     {-14, -13, -7, -5, -11, -190}
+// };
+
+// Fraction Matrix[2][4] = {
+//     {1, 2, 3, 4},
+//     {4, 3, 4, 7},
+// };
+
+// Fraction Matrix [3][5] = {
+//     {3, 2, 5, 4, 3},
+//     {1, -1, -1, -4, -2},
+//     {4, 1, 4, 0, 2}
 // };
 
 constexpr unsigned int M = sizeof(*Matrix) / sizeof(Fraction);
@@ -132,15 +161,18 @@ unsigned int N;
 unsigned int M;
 #endif
 
-#define IGNORE_ZERO_LINE(i)       \
-    bool zero_line = true;        \
-    for(int x = 0; x < M; x++) {  \
-        if (Matrix[i][x] != 0) {  \
-            zero_line = false;    \
-            break;                \
-        }                         \
-    }                             \
-    if (zero_line) continue;      
+#define IGNORE_ZERO_LINE(i) \
+    bool zero_line = true; \
+    for(int x = 0; x < M - 1; x++) { \
+        if (Matrix[i][x] != 0) { \
+            zero_line = false; \
+            break; \
+        } \
+    } \
+    if (zero_line && Matrix[i][M - 1].num != 0) { \
+        std::cout << "\n\n"; \
+        throw std::logic_error("No solutions"); } \
+    if (zero_line) continue;
 
 void print_matrix() {
     for (int i = 0; i < N; i++) {
@@ -222,7 +254,7 @@ int main() {
         for (int j = 0; j < M - 1; j++) {
             if (j != i && Matrix[i][j] != 0) {
                 if (Matrix[i][j].num > 0)
-                    std::cout << " - " << -1 * Matrix[i][j] << 'x' << j + 1;
+                    std::cout << " - " << Matrix[i][j] << 'x' << j + 1;
                 else
                     std::cout << " + " << -1 * Matrix[i][j] << 'x' << j + 1;
             }
