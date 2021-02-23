@@ -7,6 +7,7 @@ Here I store all my algorithms, if I don't forget to place it here.
 
 - Gauss method to solve matrices C++
 - Jordan-Gauss method to solve matrices with fractions C++
+- Basis solutions for matrices C++
 - Simple iteration method to solve matrices C++
 - Zeydel method to solve matrices C++
 - Half division method of functions solving C++
